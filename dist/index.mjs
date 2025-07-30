@@ -1,22 +1,8 @@
-type Pixel = [number, number, string] // [x, y, color]
-type PixelVariant = Pixel[]
+// src/components/pixel-avatar.tsx
+import { forwardRef, useEffect, useRef, useMemo } from "react";
 
-interface CharacterPart {
-  variants: PixelVariant[]
-}
-
-interface CharacterParts {
-  hair: CharacterPart
-  face: CharacterPart
-  neck: CharacterPart
-  clothing: CharacterPart
-  hands: CharacterPart
-  item: CharacterPart
-}
-
-// Generate some basic pixel art for each component
-// These are simplified examples - you would want more detailed pixel art
-export const characterParts: CharacterParts = {
+// src/data/character-parts.ts
+var characterParts = {
   // Hair styles
   hair: {
     variants: [
@@ -47,7 +33,7 @@ export const characterParts: CharacterParts = {
         [11, 8, "#513B2F"],
         [20, 8, "#513B2F"],
         [11, 9, "#513B2F"],
-        [20, 9, "#513B2F"],
+        [20, 9, "#513B2F"]
       ],
       // Style 2: Long hair
       [
@@ -86,7 +72,7 @@ export const characterParts: CharacterParts = {
         [11, 13, "#FFCC00"],
         [12, 13, "#FFCC00"],
         [19, 13, "#FFCC00"],
-        [20, 13, "#FFCC00"],
+        [20, 13, "#FFCC00"]
       ],
       // Style 3: Spiky hair
       [
@@ -118,7 +104,7 @@ export const characterParts: CharacterParts = {
         [19, 7, "#6D3B00"],
         [20, 7, "#6D3B00"],
         [11, 8, "#6D3B00"],
-        [20, 8, "#6D3B00"],
+        [20, 8, "#6D3B00"]
       ],
       // Style 4: Bald with headband
       [
@@ -145,7 +131,7 @@ export const characterParts: CharacterParts = {
         [19, 7, "#FFC8A0"],
         [20, 7, "#FFC8A0"],
         [11, 8, "#FFC8A0"],
-        [20, 8, "#FFC8A0"],
+        [20, 8, "#FFC8A0"]
       ],
       // Style 5: Mohawk
       [
@@ -176,7 +162,7 @@ export const characterParts: CharacterParts = {
         [19, 7, "#FFC8A0"],
         [20, 7, "#FFC8A0"],
         [11, 8, "#FFC8A0"],
-        [20, 8, "#FFC8A0"],
+        [20, 8, "#FFC8A0"]
       ],
       // Style 6: Curly hair
       [
@@ -222,7 +208,7 @@ export const characterParts: CharacterParts = {
         [10, 9, "#8B4513"],
         [21, 9, "#8B4513"],
         [10, 10, "#8B4513"],
-        [21, 10, "#8B4513"],
+        [21, 10, "#8B4513"]
       ],
       // Style 7: Ponytail
       [
@@ -259,7 +245,7 @@ export const characterParts: CharacterParts = {
         [21, 11, "#FF69B4"],
         [22, 11, "#FF69B4"],
         [21, 12, "#FF69B4"],
-        [22, 12, "#FF69B4"],
+        [22, 12, "#FF69B4"]
       ],
       // Style 8: Afro
       [
@@ -316,7 +302,7 @@ export const characterParts: CharacterParts = {
         [11, 7, "#2F1B14"],
         [20, 7, "#2F1B14"],
         [21, 7, "#2F1B14"],
-        [22, 7, "#2F1B14"],
+        [22, 7, "#2F1B14"]
       ],
       // Style 9: Dreadlocks
       [
@@ -368,7 +354,7 @@ export const characterParts: CharacterParts = {
         [15, 11, "#654321"],
         [17, 11, "#654321"],
         [18, 11, "#654321"],
-        [20, 11, "#654321"],
+        [20, 11, "#654321"]
       ],
       // Style 10: Buzz cut
       [
@@ -395,11 +381,10 @@ export const characterParts: CharacterParts = {
         [19, 7, "#8B7355"],
         [20, 7, "#8B7355"],
         [11, 8, "#8B7355"],
-        [20, 8, "#8B7355"],
-      ],
-    ],
+        [20, 8, "#8B7355"]
+      ]
+    ]
   },
-
   // Face styles
   face: {
     variants: [
@@ -412,7 +397,7 @@ export const characterParts: CharacterParts = {
         [14, 11, "#000000"],
         [15, 11, "#000000"],
         [16, 11, "#000000"],
-        [17, 11, "#000000"],
+        [17, 11, "#000000"]
       ],
       // Style 2: Smiling face
       [
@@ -421,7 +406,7 @@ export const characterParts: CharacterParts = {
         [14, 11, "#000000"],
         [15, 10, "#000000"],
         [16, 10, "#000000"],
-        [17, 11, "#000000"],
+        [17, 11, "#000000"]
       ],
       // Style 3: Surprised face
       [
@@ -430,7 +415,7 @@ export const characterParts: CharacterParts = {
         [15, 10, "#000000"],
         [16, 10, "#000000"],
         [15, 11, "#000000"],
-        [16, 11, "#000000"],
+        [16, 11, "#000000"]
       ],
       // Style 4: Angry face
       [
@@ -443,7 +428,7 @@ export const characterParts: CharacterParts = {
         [14, 12, "#000000"],
         [15, 11, "#000000"],
         [16, 11, "#000000"],
-        [17, 12, "#000000"],
+        [17, 12, "#000000"]
       ],
       // Style 5: Cool face with sunglasses
       [
@@ -454,7 +439,7 @@ export const characterParts: CharacterParts = {
         [18, 8, "#000000"],
         [19, 8, "#000000"],
         [15, 11, "#000000"],
-        [16, 11, "#000000"],
+        [16, 11, "#000000"]
       ],
       // Style 6: Winking face
       [
@@ -467,7 +452,7 @@ export const characterParts: CharacterParts = {
         [14, 11, "#000000"],
         [15, 11, "#000000"],
         [16, 11, "#000000"],
-        [17, 11, "#000000"],
+        [17, 11, "#000000"]
       ],
       // Style 7: Sleepy face
       [
@@ -480,7 +465,7 @@ export const characterParts: CharacterParts = {
         [17, 9, "#000000"],
         [18, 9, "#000000"],
         [15, 11, "#000000"],
-        [16, 11, "#000000"],
+        [16, 11, "#000000"]
       ],
       // Style 8: Crying face
       [
@@ -493,7 +478,7 @@ export const characterParts: CharacterParts = {
         [14, 12, "#000000"],
         [15, 11, "#000000"],
         [16, 11, "#000000"],
-        [17, 12, "#000000"],
+        [17, 12, "#000000"]
       ],
       // Style 9: Laughing face
       [
@@ -508,7 +493,7 @@ export const characterParts: CharacterParts = {
         [15, 10, "#000000"],
         [16, 10, "#000000"],
         [17, 10, "#000000"],
-        [18, 11, "#000000"],
+        [18, 11, "#000000"]
       ],
       // Style 10: Masked face
       [
@@ -535,11 +520,10 @@ export const characterParts: CharacterParts = {
         [16, 11, "#000000"],
         [17, 11, "#000000"],
         [18, 11, "#000000"],
-        [19, 11, "#000000"],
-      ],
-    ],
+        [19, 11, "#000000"]
+      ]
+    ]
   },
-
   // Neck styles
   neck: {
     variants: [
@@ -552,7 +536,7 @@ export const characterParts: CharacterParts = {
         [14, 14, "#FFC8A0"],
         [15, 14, "#FFC8A0"],
         [16, 14, "#FFC8A0"],
-        [17, 14, "#FFC8A0"],
+        [17, 14, "#FFC8A0"]
       ],
       // Style 2: Neck with collar
       [
@@ -565,7 +549,7 @@ export const characterParts: CharacterParts = {
         [15, 14, "#FFC8A0"],
         [16, 14, "#FFC8A0"],
         [17, 14, "#FFC8A0"],
-        [18, 14, "#FFFFFF"],
+        [18, 14, "#FFFFFF"]
       ],
       // Style 3: Neck with bowtie
       [
@@ -576,7 +560,7 @@ export const characterParts: CharacterParts = {
         [14, 14, "#FFC8A0"],
         [15, 14, "#FF0000"],
         [16, 14, "#FF0000"],
-        [17, 14, "#FFC8A0"],
+        [17, 14, "#FFC8A0"]
       ],
       // Style 4: Neck with necklace
       [
@@ -589,7 +573,7 @@ export const characterParts: CharacterParts = {
         [16, 14, "#FFC8A0"],
         [17, 14, "#FFC8A0"],
         [15, 15, "#FFFF00"],
-        [16, 15, "#FFFF00"],
+        [16, 15, "#FFFF00"]
       ],
       // Style 5: Neck with scarf
       [
@@ -604,7 +588,7 @@ export const characterParts: CharacterParts = {
         [17, 14, "#FFC8A0"],
         [18, 14, "#0000FF"],
         [13, 15, "#0000FF"],
-        [18, 15, "#0000FF"],
+        [18, 15, "#0000FF"]
       ],
       // Style 6: Neck with chain
       [
@@ -621,7 +605,7 @@ export const characterParts: CharacterParts = {
         [15, 15, "#C0C0C0"],
         [16, 15, "#C0C0C0"],
         [17, 15, "#C0C0C0"],
-        [18, 15, "#C0C0C0"],
+        [18, 15, "#C0C0C0"]
       ],
       // Style 7: Neck with tattoo
       [
@@ -634,7 +618,7 @@ export const characterParts: CharacterParts = {
         [16, 14, "#000000"],
         [17, 14, "#FFC8A0"],
         [15, 15, "#000000"],
-        [16, 15, "#000000"],
+        [16, 15, "#000000"]
       ],
       // Style 8: Neck with bandana
       [
@@ -651,7 +635,7 @@ export const characterParts: CharacterParts = {
         [12, 15, "#FF0000"],
         [13, 15, "#FF0000"],
         [18, 15, "#FF0000"],
-        [19, 15, "#FF0000"],
+        [19, 15, "#FF0000"]
       ],
       // Style 9: Neck with choker
       [
@@ -664,7 +648,7 @@ export const characterParts: CharacterParts = {
         [15, 14, "#FFC8A0"],
         [16, 14, "#FFC8A0"],
         [17, 14, "#FFC8A0"],
-        [18, 14, "#000000"],
+        [18, 14, "#000000"]
       ],
       // Style 10: Neck with high collar
       [
@@ -681,11 +665,10 @@ export const characterParts: CharacterParts = {
         [13, 15, "#FFFFFF"],
         [14, 15, "#FFFFFF"],
         [17, 15, "#FFFFFF"],
-        [18, 15, "#FFFFFF"],
-      ],
-    ],
+        [18, 15, "#FFFFFF"]
+      ]
+    ]
   },
-
   // Clothing styles
   clothing: {
     variants: [
@@ -722,7 +705,7 @@ export const characterParts: CharacterParts = {
         [11, 18, "#3366CC"],
         [12, 18, "#3366CC"],
         [19, 18, "#3366CC"],
-        [20, 18, "#3366CC"],
+        [20, 18, "#3366CC"]
       ],
       // Style 2: Hoodie
       [
@@ -761,7 +744,7 @@ export const characterParts: CharacterParts = {
         [10, 15, "#CC3366"],
         [11, 15, "#CC3366"],
         [20, 15, "#CC3366"],
-        [21, 15, "#CC3366"],
+        [21, 15, "#CC3366"]
       ],
       // Style 3: Suit
       [
@@ -796,7 +779,7 @@ export const characterParts: CharacterParts = {
         [11, 18, "#000000"],
         [12, 18, "#000000"],
         [19, 18, "#000000"],
-        [20, 18, "#000000"],
+        [20, 18, "#000000"]
       ],
       // Style 4: Tank top
       [
@@ -825,7 +808,7 @@ export const characterParts: CharacterParts = {
         [12, 18, "#66CC33"],
         [13, 18, "#66CC33"],
         [18, 18, "#66CC33"],
-        [19, 18, "#66CC33"],
+        [19, 18, "#66CC33"]
       ],
       // Style 5: Armor
       [
@@ -860,7 +843,7 @@ export const characterParts: CharacterParts = {
         [11, 18, "#888888"],
         [12, 18, "#888888"],
         [19, 18, "#888888"],
-        [20, 18, "#888888"],
+        [20, 18, "#888888"]
       ],
       // Style 6: Vest
       [
@@ -889,7 +872,7 @@ export const characterParts: CharacterParts = {
         [12, 18, "#8B4513"],
         [13, 18, "#8B4513"],
         [18, 18, "#8B4513"],
-        [19, 18, "#8B4513"],
+        [19, 18, "#8B4513"]
       ],
       // Style 7: Jacket
       [
@@ -930,7 +913,7 @@ export const characterParts: CharacterParts = {
         [10, 18, "#2F4F4F"],
         [11, 18, "#2F4F4F"],
         [20, 18, "#2F4F4F"],
-        [21, 18, "#2F4F4F"],
+        [21, 18, "#2F4F4F"]
       ],
       // Style 8: Dress shirt
       [
@@ -965,7 +948,7 @@ export const characterParts: CharacterParts = {
         [11, 18, "#FFFFFF"],
         [12, 18, "#FFFFFF"],
         [19, 18, "#FFFFFF"],
-        [20, 18, "#FFFFFF"],
+        [20, 18, "#FFFFFF"]
       ],
       // Style 9: Sweater
       [
@@ -1000,7 +983,7 @@ export const characterParts: CharacterParts = {
         [11, 18, "#800080"],
         [12, 18, "#800080"],
         [19, 18, "#800080"],
-        [20, 18, "#800080"],
+        [20, 18, "#800080"]
       ],
       // Style 10: Polo shirt
       [
@@ -1035,11 +1018,10 @@ export const characterParts: CharacterParts = {
         [11, 18, "#008000"],
         [12, 18, "#008000"],
         [19, 18, "#008000"],
-        [20, 18, "#008000"],
-      ],
-    ],
+        [20, 18, "#008000"]
+      ]
+    ]
   },
-
   // Hands styles
   hands: {
     variants: [
@@ -1048,21 +1030,21 @@ export const characterParts: CharacterParts = {
         [9, 17, "#FFC8A0"],
         [10, 17, "#FFC8A0"],
         [21, 17, "#FFC8A0"],
-        [22, 17, "#FFC8A0"],
+        [22, 17, "#FFC8A0"]
       ],
       // Style 2: Gloved hands
       [
         [9, 17, "#FF0000"],
         [10, 17, "#FF0000"],
         [21, 17, "#FF0000"],
-        [22, 17, "#FF0000"],
+        [22, 17, "#FF0000"]
       ],
       // Style 3: Robot hands
       [
         [9, 17, "#CCCCCC"],
         [10, 17, "#CCCCCC"],
         [21, 17, "#CCCCCC"],
-        [22, 17, "#CCCCCC"],
+        [22, 17, "#CCCCCC"]
       ],
       // Style 4: Claws
       [
@@ -1071,7 +1053,7 @@ export const characterParts: CharacterParts = {
         [10, 17, "#FFFF00"],
         [21, 17, "#FFFF00"],
         [22, 17, "#FFFF00"],
-        [23, 16, "#FFFF00"],
+        [23, 16, "#FFFF00"]
       ],
       // Style 5: Paws
       [
@@ -1080,14 +1062,14 @@ export const characterParts: CharacterParts = {
         [9, 18, "#8B4513"],
         [21, 17, "#8B4513"],
         [22, 17, "#8B4513"],
-        [22, 18, "#8B4513"],
+        [22, 18, "#8B4513"]
       ],
       // Style 6: Fingerless gloves
       [
         [9, 17, "#000000"],
         [10, 17, "#FFC8A0"],
         [21, 17, "#FFC8A0"],
-        [22, 17, "#000000"],
+        [22, 17, "#000000"]
       ],
       // Style 7: Mittens
       [
@@ -1098,7 +1080,7 @@ export const characterParts: CharacterParts = {
         [21, 17, "#FF0000"],
         [22, 17, "#FF0000"],
         [21, 18, "#FF0000"],
-        [22, 18, "#FF0000"],
+        [22, 18, "#FF0000"]
       ],
       // Style 8: Bandaged hands
       [
@@ -1109,7 +1091,7 @@ export const characterParts: CharacterParts = {
         [9, 18, "#FFFFFF"],
         [10, 18, "#FFFFFF"],
         [21, 18, "#FFFFFF"],
-        [22, 18, "#FFFFFF"],
+        [22, 18, "#FFFFFF"]
       ],
       // Style 9: Cybernetic hands
       [
@@ -1118,7 +1100,7 @@ export const characterParts: CharacterParts = {
         [21, 17, "#4169E1"],
         [22, 17, "#4169E1"],
         [8, 17, "#00FFFF"],
-        [23, 17, "#00FFFF"],
+        [23, 17, "#00FFFF"]
       ],
       // Style 10: Gauntlets
       [
@@ -1131,11 +1113,10 @@ export const characterParts: CharacterParts = {
         [22, 17, "#FFD700"],
         [21, 16, "#FFD700"],
         [22, 16, "#FFD700"],
-        [23, 16, "#FFD700"],
-      ],
-    ],
+        [23, 16, "#FFD700"]
+      ]
+    ]
   },
-
   // Item styles (held in hands)
   item: {
     variants: [
@@ -1147,7 +1128,7 @@ export const characterParts: CharacterParts = {
         [7, 18, "#CCCCCC"],
         [7, 19, "#CCCCCC"],
         [6, 14, "#CCCCCC"],
-        [8, 14, "#CCCCCC"],
+        [8, 14, "#CCCCCC"]
       ],
       // Style 2: Shield
       [
@@ -1160,7 +1141,7 @@ export const characterParts: CharacterParts = {
         [23, 17, "#8B4513"],
         [24, 17, "#8B4513"],
         [25, 17, "#8B4513"],
-        [24, 18, "#8B4513"],
+        [24, 18, "#8B4513"]
       ],
       // Style 3: Magic staff
       [
@@ -1170,7 +1151,7 @@ export const characterParts: CharacterParts = {
         [7, 16, "#8B4513"],
         [7, 17, "#8B4513"],
         [7, 18, "#8B4513"],
-        [7, 19, "#8B4513"],
+        [7, 19, "#8B4513"]
       ],
       // Style 4: Potion
       [
@@ -1179,7 +1160,7 @@ export const characterParts: CharacterParts = {
         [23, 17, "#00FF00"],
         [24, 17, "#00FF00"],
         [23, 18, "#FFFFFF"],
-        [24, 18, "#FFFFFF"],
+        [24, 18, "#FFFFFF"]
       ],
       // Style 5: Bow
       [
@@ -1190,7 +1171,7 @@ export const characterParts: CharacterParts = {
         [10, 15, "#8B4513"],
         [7, 16, "#FFFF00"],
         [8, 16, "#FFFF00"],
-        [9, 16, "#FFFF00"],
+        [9, 16, "#FFFF00"]
       ],
       // Style 6: Axe
       [
@@ -1204,7 +1185,7 @@ export const characterParts: CharacterParts = {
         [7, 16, "#8B4513"],
         [7, 17, "#8B4513"],
         [7, 18, "#8B4513"],
-        [7, 19, "#8B4513"],
+        [7, 19, "#8B4513"]
       ],
       // Style 7: Hammer
       [
@@ -1216,7 +1197,7 @@ export const characterParts: CharacterParts = {
         [7, 16, "#8B4513"],
         [7, 17, "#8B4513"],
         [7, 18, "#8B4513"],
-        [7, 19, "#8B4513"],
+        [7, 19, "#8B4513"]
       ],
       // Style 8: Spear
       [
@@ -1229,7 +1210,7 @@ export const characterParts: CharacterParts = {
         [7, 16, "#8B4513"],
         [7, 17, "#8B4513"],
         [7, 18, "#8B4513"],
-        [7, 19, "#8B4513"],
+        [7, 19, "#8B4513"]
       ],
       // Style 9: Crystal orb
       [
@@ -1241,7 +1222,7 @@ export const characterParts: CharacterParts = {
         [25, 16, "#00FFFF"],
         [23, 17, "#00FFFF"],
         [24, 17, "#00FFFF"],
-        [25, 17, "#00FFFF"],
+        [25, 17, "#00FFFF"]
       ],
       // Style 10: Book
       [
@@ -1256,8 +1237,135 @@ export const characterParts: CharacterParts = {
         [25, 17, "#8B4513"],
         [23, 18, "#8B4513"],
         [24, 18, "#8B4513"],
-        [25, 18, "#8B4513"],
-      ],
-    ],
-  },
+        [25, 18, "#8B4513"]
+      ]
+    ]
+  }
+};
+
+// src/utils/dna.ts
+function generateRandomDNA() {
+  return {
+    hair: Math.floor(Math.random() * 10),
+    face: Math.floor(Math.random() * 10),
+    neck: Math.floor(Math.random() * 10),
+    clothing: Math.floor(Math.random() * 10),
+    hands: Math.floor(Math.random() * 10),
+    item: Math.floor(Math.random() * 10)
+  };
 }
+function parseDNA(dnaString) {
+  if (!dnaString || typeof dnaString !== "string") {
+    throw new Error("DNA string is required and must be a string");
+  }
+  const parts = dnaString.split("-");
+  if (parts.length !== 6) {
+    throw new Error("DNA string must contain exactly 6 parts separated by hyphens");
+  }
+  const [hair, face, neck, clothing, hands, item] = parts.map((part) => {
+    const num = parseInt(part, 10);
+    if (isNaN(num) || num < 0 || num > 9) {
+      throw new Error(`Invalid DNA part: ${part}. Each part must be a number between 0-9`);
+    }
+    return num;
+  });
+  return { hair, face, neck, clothing, hands, item };
+}
+function formatDNA(dna) {
+  return `${dna.hair}-${dna.face}-${dna.neck}-${dna.clothing}-${dna.hands}-${dna.item}`;
+}
+function isValidDNA(dnaString) {
+  try {
+    parseDNA(dnaString);
+    return true;
+  } catch {
+    return false;
+  }
+}
+function generateRandomDNAString() {
+  return formatDNA(generateRandomDNA());
+}
+
+// src/components/pixel-avatar.tsx
+import { jsx } from "react/jsx-runtime";
+var PixelAvatar = forwardRef(
+  ({
+    dna,
+    size = 256,
+    className,
+    pixelSize = 6,
+    // 增加默认像素尺寸，让头像更大
+    style,
+    backgroundColor = "#ffffff",
+    offsetY = 0,
+    offsetX = -3.5
+    // 向左移动头像以在24x24画布中水平居中
+  }, ref) => {
+    const canvasRef = useRef(null);
+    const selectedParts = useMemo(() => {
+      try {
+        return parseDNA(dna);
+      } catch (error) {
+        console.warn("Invalid DNA string, using default avatar:", error);
+        return { hair: 0, face: 0, neck: 0, clothing: 0, hands: 0, item: 0 };
+      }
+    }, [dna]);
+    const canvasSize = useMemo(() => 24 * pixelSize, [pixelSize]);
+    useEffect(() => {
+      const canvas = ref ? ref.current : canvasRef.current;
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+      ctx.fillStyle = backgroundColor;
+      ctx.fillRect(0, 0, canvasSize, canvasSize);
+      const drawOrder = ["neck", "clothing", "hands", "hair", "face", "item"];
+      drawOrder.forEach((partKey) => {
+        const partIndex = selectedParts[partKey];
+        const partData = characterParts[partKey];
+        if (partIndex >= 0 && partIndex < partData.variants.length) {
+          const pixelData = partData.variants[partIndex];
+          pixelData.forEach((pixel) => {
+            const [x, y, color] = pixel;
+            const adjustedX = x + offsetX;
+            const adjustedY = y + offsetY;
+            if (adjustedX >= 0 && adjustedX < 24 && adjustedY >= 0 && adjustedY < 24) {
+              ctx.fillStyle = color;
+              ctx.fillRect(
+                adjustedX * pixelSize,
+                adjustedY * pixelSize,
+                pixelSize,
+                pixelSize
+              );
+            }
+          });
+        }
+      });
+    }, [selectedParts, pixelSize, canvasSize, backgroundColor, offsetY, offsetX, ref]);
+    return /* @__PURE__ */ jsx(
+      "canvas",
+      {
+        ref: ref || canvasRef,
+        width: canvasSize,
+        height: canvasSize,
+        className,
+        style: {
+          width: `${size}px`,
+          height: `${size}px`,
+          imageRendering: "pixelated",
+          backgroundColor,
+          // 设置CSS背景颜色作为后备
+          ...style
+        }
+      }
+    );
+  }
+);
+PixelAvatar.displayName = "PixelAvatar";
+export {
+  PixelAvatar,
+  formatDNA,
+  generateRandomDNA,
+  generateRandomDNAString,
+  isValidDNA,
+  parseDNA
+};
